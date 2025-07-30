@@ -14,14 +14,16 @@ fatal() {
     exit $code
 }
 
+echo "Info: checking for deps"
 # we should have git, but check anyways
-command -v git &> /dev/null || fatal "command 'git' not found, please install 'the stupid content tracker'"
-
-# check if we have GNU stow
+command -v git &> /dev/null || fatal "command 'git' not found, please install the stupid content tracker"
 command -v stow &> /dev/null || fatal "command 'stow' not found, please install GNU Stow"
 
-# install packages
-stow -v 2 -d "$SCRIPT_DIR" -t ~ -S vim -S tmux -S shell -S bin_src
+echo "Info: updating Git submodules and initializing if necessary"
+git submodule update --init || fatal "git command failed"
 
-# make sure bin contentes are executable
-chmod --dereference +x ~/bin/*
+echo "Info: installing dotfiles to $USER's home with GNU Stow"
+stow -v 2 -d "$SCRIPT_DIR" -t ~ -S vim -S tmux -S shell -S bin_src || fatal "stow failed"
+
+echo "Info: making sure that ~/bin contentes are executable"
+chmod --dereference --verbose +x ~/bin/* || fatal "chmod failed"
