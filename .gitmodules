@@ -1,0 +1,6 @@
+[submodule "submodules/paths.bash"]
+	path = submodules/paths.bash
+	url = https://github.com/sscott33/paths.bash.git
+[submodule "submodules/myvim"]
+	path = submodules/myvim
+	url = https://github.com/junegunn/myvim.git
