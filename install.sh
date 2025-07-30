@@ -5,7 +5,7 @@ SCRIPT_DIR=${SCRIPT_PATH%/*}
 
 fatal() {
     local msg code
-    msg=$!
+    msg=$1
     code=$2
 
     (( code < 1 || code > 255 )) && code=1
@@ -21,8 +21,7 @@ command -v git &> /dev/null || fatal "command 'git' not found, please install 't
 command -v stow &> /dev/null || fatal "command 'stow' not found, please install GNU Stow"
 
 # install packages
-stow -d "$SCRIPT_DIR" -t "$SCRIPT_DIR/.." -S vim -S tmux -S shell -S bin_src
+stow -v 2 -d "$SCRIPT_DIR" -t ~ -S vim -S tmux -S shell -S bin_src
 
 # make sure bin contentes are executable
-
-chmod --dereference --verbose +x ~/bin/*
+chmod --dereference +x ~/bin/*
