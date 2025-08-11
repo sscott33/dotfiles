@@ -10,14 +10,14 @@ fatal() {
 
     (( code < 1 || code > 255 )) && code=1
 
-    printf >&2 '--E-- fatal: %s\n' "$msg"
+    printf >&2 -- '--E-- fatal: %s\n' "$msg"
     exit $code
 }
 
 info() {
     local msg
     msg=$1
-    printf '--I-- %s\n' "$msg"
+    printf -- '--I-- %s\n' "$msg"
 }
 
 info "checking for deps"
@@ -26,16 +26,13 @@ command -v git &> /dev/null || fatal "command 'git' not found, please install th
 command -v stow &> /dev/null || fatal "command 'stow' not found, please install GNU Stow"
 
 info "updating Git submodules and initializing if necessary"
-git submodule update --init || fatal "git command failed"
-
-info "cleaning up previous GNU stow dotfiles install"
-stow -v 2 -d "$SCRIPT_DIR" -t ~ -D . || fatal "stow failed"
+git submodule update --init || fatal "git submodule update failed"
 
 info "installing dotfiles to $USER's home with GNU Stow"
-stow -v 2 -d "$SCRIPT_DIR" -t ~ -S . || fatal "stow failed"
+stow -v 2 -d "$SCRIPT_DIR" -t ~ -R . || fatal "stow failed"
 
 info "making sure that ~/bin contentes are executable"
-chmod --dereference --verbose +x ~/bin/* || fatal "chmod failed"
+chmod --verbose +x ~/bin/* || fatal "chmod failed"
 
 info "installing Vim plugins with Vundle"
 vim +PluginInstall +qall || fatal "encountered an issue installing Vim plugins with Vundle"
