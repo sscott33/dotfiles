@@ -1,0 +1,19 @@
+#!/usr/bin/env -S awk -f
+
+# courtesy of Google Gemini
+
+{
+    if (NR == 1) {
+        prefix = $0
+    } else {
+        for (i = 1; i <= length(prefix) && i <= length($0); i++) {
+            if (substr(prefix, 1, i) != substr($0, 1, i)) {
+                prefix = substr(prefix, 1, i - 1)
+                break
+            }
+        }
+    }
+}
+END {
+    print prefix
+}

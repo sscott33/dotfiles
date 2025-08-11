@@ -1,0 +1,6 @@
+^/README.*
+^/install.sh
+^/submodules
+\.git
+\.gitignore
+\.gitmodules

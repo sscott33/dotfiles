@@ -1,0 +1,5 @@
+# Ignore everything in this directory
+*
+# Except this .gitignore file and the vundle submodule's link
+!.gitignore
+!Vundle.vim

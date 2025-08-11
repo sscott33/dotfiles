@@ -1,0 +1,83 @@
+#!/bin/bash
+
+# Authored by Samuel Scott
+#
+# Just a quick script for transferring a few kB of data between Linux machines
+# with cameras. Some hard-coded parameters will need adjusting for your
+# terminal's size and font point. Said adjustment is largely trial and error.
+#
+# You can provide 1 to 2 arguments. If one, the destination filename will match
+# the source's. If two, the destination filename will match the second argument.
+# Note that if you pass a file path with a directory name in it, then uudecode
+# will create that directory in the directory you run uudecode in on the
+# receiving machine.
+
+## Dependency Checking #################
+unmetDependencies=""
+[ -f "$(which qrencode 2> /dev/null)" ] || unmetDependencies+=" qrencode"
+[ -f "$(which uuencode 2> /dev/null)" ] || unmetDependencies+=" uuencode"
+
+if [ -n "$unmetDependencies" ]; then 
+  echo "One or more unmet dependencies. Please install the following programs or
+  make sure they are in your \$PATH:$unmetDependencies"
+  exit
+fi
+########################################
+
+## Parameters ##########################
+# number of lines from uuencode output to store in a single qr code
+linesPerQRCode=11
+
+# the delay before the next qr code is generated and displayed
+readDelay=2
+
+# make the code cleaner and allow for easy option edits
+shopt -s expand_aliases
+alias qr='qrencode -t UTF8 -o - '
+########################################
+
+## Source and Destination Filenames ####
+if [ -z "$1" ]; then
+  echo Please provide a filename.
+  exit
+else
+  inFile="$1"
+fi
+
+if [ -z "$2" ]; then
+  outFile="$inFile"
+  echo The destination filename will match the source filename.
+  echo
+else
+  outFile="$2"
+fi
+########################################
+
+## Data Transmission ###################
+read -rp "Multiple QR codes may be needed to complete the transfer. Each will
+appear for at least $readDelay seconds. If you do not know how to receive and
+decode this datastream, try the following:
+
+  zbarcam --raw | sed '/^$/d' | uudecode
+
+and close the zbarcam window to complete the transfer.
+
+Press the Enter key when ready to receive."
+
+count=1
+while mapfile -t -n $linesPerQRCode linesArray && ((${#linesArray[@]})); do
+  echo
+  printf "%s\n" "${linesArray[@]}" | qr
+  echo "Displaying QR code $count."
+  sleep $readDelay
+  ((count=count+1))
+done < <(uuencode -m "$inFile" "$outFile")
+#sleep 5 # may need this if doing a very fast automated transfer
+echo Transmission complete.
+########################################
+
+## Checksum for Integrity ##############
+echo
+echo "SHA-256 checksum of the payload:
+  $(sha256sum "$inFile" | cut -d " " -f 1)"
+########################################

@@ -10,20 +10,32 @@ fatal() {
 
     (( code < 1 || code > 255 )) && code=1
 
-    echo >&2 "Fatal: $*"
+    printf >&2 '--E-- fatal: %s\n' "$msg"
     exit $code
 }
 
-echo "Info: checking for deps"
+info() {
+    local msg
+    msg=$1
+    printf '--I-- %s\n' "$msg"
+}
+
+info "checking for deps"
 # we should have git, but check anyways
 command -v git &> /dev/null || fatal "command 'git' not found, please install the stupid content tracker"
 command -v stow &> /dev/null || fatal "command 'stow' not found, please install GNU Stow"
 
-echo "Info: updating Git submodules and initializing if necessary"
+info "updating Git submodules and initializing if necessary"
 git submodule update --init || fatal "git command failed"
 
-echo "Info: installing dotfiles to $USER's home with GNU Stow"
-stow -v 2 -d "$SCRIPT_DIR" -t ~ -S vim -S tmux -S shell -S bin_src || fatal "stow failed"
+info "cleaning up previous GNU stow dotfiles install"
+stow -v 2 -d "$SCRIPT_DIR" -t ~ -D . || fatal "stow failed"
 
-echo "Info: making sure that ~/bin contentes are executable"
+info "installing dotfiles to $USER's home with GNU Stow"
+stow -v 2 -d "$SCRIPT_DIR" -t ~ -S . || fatal "stow failed"
+
+info "making sure that ~/bin contentes are executable"
 chmod --dereference --verbose +x ~/bin/* || fatal "chmod failed"
+
+info "installing Vim plugins with Vundle"
+vim +PluginInstall +qall || fatal "encountered an issue installing Vim plugins with Vundle"

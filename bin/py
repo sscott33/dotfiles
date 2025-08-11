@@ -1,0 +1,18 @@
+#!/usr/bin/python3 -i
+import polars as pl
+import math
+import cmath
+
+
+def parallel(*resistors):
+    return 1 / sum(1 / r for r in resistors)
+
+def divisors(n):
+    n = abs(n)
+    return [x for x in range(1, n + 1) if n % x == 0]
+
+def dist(p1, p2):
+    x1, y1 = p1
+    x2, y2 = p2
+
+    return math.sqrt((x2 - x1) ** 2 + (y2 - y1) ** 2)

@@ -1,0 +1,64 @@
+
+# back with b+
+for i in {1..10}; do
+    a+=b
+    c="cd "
+    for ((j=1; j<=i; j++)); do
+        c+=../
+    done
+    alias $a="$c"
+done
+unset a b c i j
+
+# determine which fd name we have
+fd=
+type fd &>/dev/null && fd=fd
+type fd-find &>/dev/null && fd=fd-find
+[[ -n $fd ]] && alias f=$fd
+
+alias sha=sha256sum
+
+alias h='hostname -f'
+alias x='chmod +x'
+alias rp='realpath -e'
+alias ta='tmux new -A'
+
+#alias eb='history -a; unset DISPLAY; exec bash'
+alias eb='history -a; exec bash'
+alias fresh_bash='env -i HOME="$HOME" bash -l -c /bin/bash'
+
+# vim aliases
+alias vi="vim"
+alias vims='vim -S Session.vim'
+alias rms='rm -f Session.vim'
+
+[[ $(type -t cp) == "alias" ]] && unalias cp
+
+# ls aliases
+alias l='\ls -F --color -l'
+alias la='\ls -F --color -la'
+alias lh='\ls -F --color -lh'
+alias lha='\ls -F --color -lah'
+alias lah='lha'
+alias ltr='\ls -F --color -ltr'
+alias lrt='ltr'
+
+alias rcp='rsync -ahv --info=progress2'
+alias p=pwd
+alias grep='grep --color=auto'
+alias g=grep
+alias zgrep='zgrep --color=auto'
+alias zg=zgrep
+
+# special cd
+cd_func() {
+    if [[ "$1" == "-" ]]; then
+        builtin cd - && l
+    elif [ -d "$1" ] || [ -z "$1" ]; then
+        builtin cd "$@" && l
+    else
+        builtin cd "${1%/*}" && l
+    fi
+} 
+alias cd='cd_func'
+complete -d cd
