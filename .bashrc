@@ -167,10 +167,11 @@ clean_io () {
 complete -W "-revert" clean_io
 clean_io -revert
 
-git_loc=$(type -p git)
-git_loc=${git_loc%/*}
-. "$git_loc"/../share/bash-completion/completions/git-prompt.sh
-unset git_loc
+#git_loc=$(type -p git)
+#git_loc=${git_loc%/*}
+#. "$git_loc"/../share/bash-completion/completions/git-prompt.sh
+#unset git_loc
+. ~/src/git-prompt.sh
 export GIT_PS1_DESCRIBE_STYLE='contains'
 export GIT_PS1_SHOWCOLORHINTS='y'
 export GIT_PS1_SHOWDIRTYSTATE='y'
