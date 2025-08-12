@@ -1,1 +1,1 @@
-[[ -n $TMUX ]] && . ~/.bashrc
+. ~/.bashrc
