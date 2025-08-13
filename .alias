@@ -14,6 +14,7 @@ unset a b c i j
 fd=
 type fd &>/dev/null && fd=fd
 type fd-find &>/dev/null && fd=fd-find
+type fdfind &>/dev/null && fd=fdfind
 [[ -n $fd ]] && alias f=$fd
 
 alias sha=sha256sum
