@@ -145,6 +145,7 @@ _jobs() {
 
 normal_color="$(tput sgr0)"
 _debug_trap () {
+    [[ -t 1 ]] || return
     #set -x
     # this is problematic for loops in the shell
     printf "%s" "$normal_color"
