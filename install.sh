@@ -26,7 +26,7 @@ command -v git &> /dev/null || fatal "command 'git' not found, please install th
 command -v stow &> /dev/null || fatal "command 'stow' not found, please install GNU Stow"
 
 info "updating Git submodules and initializing if necessary"
-git submodule update --init || fatal "git submodule update failed"
+( \cd "$SCRIPT_DIR" && git submodule update --init; ) || fatal "git submodule update failed"
 
 info "installing dotfiles to $USER's home with GNU Stow"
 stow -v 2 -d "$SCRIPT_DIR" -t ~ -R . || fatal "stow failed"
