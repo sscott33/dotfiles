@@ -27,10 +27,8 @@ paths=(
     "$HOME/bin"
 )
 
-i=0
-for p in paths; do
-    [[ -d $p ]] || unset paths[$i]
-    (( i++ ))
+for i in "${!paths[@]}"; do
+    [[ -d ${paths[i]} ]] || unset "paths[$i]"
 done
 paths=( "${paths[@]}" )
 PATH=$(IFS=:; echo "${paths[*]}:$PATH")
