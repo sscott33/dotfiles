@@ -1,4 +1,4 @@
-#!/run/current-system/sw/bin/bash
+#!/usr/bin/env bash
 
 SCRIPT_PATH=$(readlink -e "$BASH_SOURCE")
 SCRIPT_DIR=${SCRIPT_PATH%/*}
