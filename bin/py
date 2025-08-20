@@ -1,5 +1,9 @@
 #!/usr/bin/env -S python3 -i
-import polars as pl
+try:
+    import polars as pl
+except ModuleNotFoundError:
+    print("Warning: polars not installed")
+
 import math
 import cmath
 
