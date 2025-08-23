@@ -6,6 +6,7 @@ except ModuleNotFoundError:
 
 import math
 import cmath
+from pathlib import Path
 
 
 def parallel(*resistors):

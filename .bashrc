@@ -12,6 +12,7 @@ shopt -s checkwinsize # checks term size when bash regains control
 # READLINE #############################
 bind 'set bell-style none'
 bind "set completion-ignore-case on"
+bind "set show-all-if-ambiguous on"
 # END READLINE #########################
 
 # INCLUDES #############################

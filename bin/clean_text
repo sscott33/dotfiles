@@ -1,0 +1,3 @@
+#!/bin/sh
+
+tr -dc '[:space:][:print:]'
