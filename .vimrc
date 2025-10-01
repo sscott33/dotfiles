@@ -199,7 +199,11 @@ vnoremap // y/\V<C-R>=escape(@",'/\')<CR><CR>
 
 " retab a 2-space/tab file to a 4-space/tab file
 " https://stackoverflow.com/a/16892086
-nnoremap <leader>R :set ts=2 sts=2 noet<CR>:retab!<CR>:set ts=4 sts=4 et<CR>:retab<CR>
+nnoremap <leader>i4 :set ts=2 sts=2 noet<CR>:retab!<CR>:set ts=4 sts=4 et<CR>:retab<CR>
+nnoremap <leader>i2 :set ts=4 sts=4 noet<CR>:retab!<CR>:set ts=2 sts=2 et<CR>:retab<CR>
+
+nnoremap <leader>t4 :set ts=4 sts=4 et<CR>
+nnoremap <leader>t2 :set ts=2 sts=2 et<CR>
 
 " get full path of current file
 nnoremap <leader>f :!realpath "%"<CR>
