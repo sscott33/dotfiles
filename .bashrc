@@ -27,6 +27,7 @@ export AWKPATH=".:$HOME/src/awk"
 
 paths=(
     "$HOME/bin"
+    "$HOME/.local/bin"
 )
 
 for i in "${!paths[@]}"; do
