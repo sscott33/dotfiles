@@ -1,23 +1,74 @@
-#!/usr/bin/env -S python3 -i
-try:
-    import polars as pl
-except ModuleNotFoundError:
-    print("Warning: polars not installed")
+#!/usr/bin/env -S uv run --script
+# /// script
+# requires-python = ">=3.14"
+# dependencies = [
+#     "ipython>=9.10.0",
+#     "pandas>=3.0.1",
+#     "polars>=1.38.1",
+# ]
+# ///
 
-import math
+
 import cmath
+import importlib
+import math
 from pathlib import Path
+
+# the following is done lazily:
+#   import pandas as pd
+#   import polars as pl
+
+import importlib.util
+import sys
+
+
+def lazy_import(name):
+    spec = importlib.util.find_spec(name)
+    loader = importlib.util.LazyLoader(spec.loader)
+    spec.loader = loader
+    module = importlib.util.module_from_spec(spec)
+    sys.modules[name] = module
+    loader.exec_module(module)
+    return module
+
+
+pd = lazy_import("pandas")
+pl = lazy_import("polars")
 
 
 def parallel(*resistors):
     return 1 / sum(1 / r for r in resistors)
 
+
 def divisors(n):
     n = abs(n)
     return [x for x in range(1, n + 1) if n % x == 0]
+
 
 def dist(p1, p2):
     x1, y1 = p1
     x2, y2 = p2
 
     return math.sqrt((x2 - x1) ** 2 + (y2 - y1) ** 2)
+
+
+def pct_diff(orig_val, new_val):
+    return (new_val - orig_val) / orig_val * 100
+
+
+# IPython.start_ipython(argv=[], user_ns=globals())
+from IPython.terminal.embed import InteractiveShellEmbed
+from traitlets.config import Config
+
+cfg = Config()
+cfg.TerminalInteractiveShell.autoindent = True
+cfg.TerminalInteractiveShell.colors = "NoColor"
+cfg.TerminalInteractiveShell.confirm_exit = False
+cfg.TerminalInteractiveShell.display_completions = "readlinelike"
+cfg.TerminalInteractiveShell.editing_mode = "vi"
+cfg.TerminalInteractiveShell.history_load_length = 100
+cfg.TerminalInteractiveShell.simple_prompt = False
+cfg.TerminalInteractiveShell.term_title = False
+
+ipshell = InteractiveShellEmbed(config=cfg)
+ipshell(local_ns=globals())
