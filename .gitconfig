@@ -1,0 +1,45 @@
+[user]
+	name = Samuel Scott
+	email = samuel.scott@posteo.net
+	signingKey = ~/.ssh/id_ed25519.pub
+[gpg]
+	program = gpg
+	format = ssh
+[credential]
+	credentialStore = gpg
+[gpg "ssh"]
+	allowedSignersFile = ~/.ssh/allowed_signers
+[pull]
+	rebase = true
+[alias]
+    list-tags = "!sh -c 'git for-each-ref --sort=creatordate --format \"%(creatordate:short) %(refname:short)\" refs/tags' -"
+    head = "describe --tags --always"
+    headd = "describe --tags --always --dirty"
+	root = rev-parse --show-toplevel
+    d = diff
+    st = status
+    s = stash
+    sp = stash pop
+    pl = pull
+    ps = push
+    c = commit
+    a = add
+    f = fetch
+    l = log --shortstat
+    ln = log --name-only
+    lsig = log --show-signature --shortstat
+    lol = log --oneline
+    lp = log -p --shortstat
+[checkout]
+	defaultRemote = origin
+[log]
+	date = local
+[init]
+	defaultBranch = main
+[filter "lfs"]
+	clean = git-lfs clean -- %f
+	smudge = git-lfs smudge -- %f
+	process = git-lfs filter-process
+	required = true
+[commit]
+	gpgsign = true
