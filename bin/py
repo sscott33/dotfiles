@@ -8,21 +8,14 @@
 # ]
 # ///
 
-
 import cmath
-import importlib
 import math
 from pathlib import Path
 
-# the following is done lazily:
-#   import pandas as pd
-#   import polars as pl
-
-import importlib.util
-import sys
-
-
 def lazy_import(name):
+    import importlib.util
+    import sys
+
     spec = importlib.util.find_spec(name)
     loader = importlib.util.LazyLoader(spec.loader)
     spec.loader = loader
