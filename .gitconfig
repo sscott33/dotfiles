@@ -12,25 +12,26 @@
 [pull]
 	rebase = true
 [alias]
-    list-tags = "!sh -c 'git for-each-ref --sort=creatordate --format \"%(creatordate:short) %(refname:short)\" refs/tags' -"
-    head = "describe --tags --always"
-    headd = "describe --tags --always --dirty"
-	root = rev-parse --show-toplevel
-    d = diff
-    st = status
-    s = stash
-    sp = stash pop
-    pl = pull
-    ps = push
+    a = add
     c = commit
     co = checkout
-    a = add
+    d = diff
     f = fetch
+    head = "describe --tags --always"
+    headd = "describe --tags --always --dirty"
     l = log --shortstat
+    list-tags = "!sh -c 'git for-each-ref --sort=creatordate --format \"%(creatordate:short) %(refname:short)\" refs/tags' -"
     ln = log --name-only
-    lsig = log --show-signature --shortstat
     lol = log --oneline
     lp = log -p --shortstat
+    lsig = log --show-signature --shortstat
+    pl = pull
+    ps = push
+    root = rev-parse --show-toplevel
+    s = stash
+    sm = submodule
+    sp = stash pop
+    st = status
 [checkout]
 	defaultRemote = origin
 [log]
