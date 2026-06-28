@@ -141,14 +141,17 @@ rename_xterm () {
 # emergency kill of my processes
 _ekill () {
     local host="$1"
-    #local kill_cmd='kill -9 $(pgrep -u $USER)'
 
     if [[ -n "$host" ]]; then
         echo "killing your processes on $host"
-        ssh "$host" 'kill -9 $(pgrep -u $USER)'
+        ssh "$host" 'kill -9 $(pgrep -u $(whoami) | sort -rn)'
     else
         echo "killing your processes"
-        kill -9 $(pgrep -u $USER)
+        local pids
+        pids=$(pgrep -u "$(whoami)" | grep -v -w -e "$$" -e "$PPID" | sort -rn)
+        [[ -n "$pids" ]] && kill -9 $pids
+        # Finally kill current shell
+        kill -9 $$ $PPID 2>/dev/null
     fi
 }
 
